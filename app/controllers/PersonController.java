@@ -43,6 +43,17 @@ public class PersonController extends Controller {
                 .thenApplyAsync(p -> redirect(routes.PersonController.index()), ec.current());
     }
 
+    public CompletionStage<Result> updateForm(final Http.Request request, String name) {
+        return personRepository.find(name)
+                .thenApplyAsync(person -> ok(views.html.update.render(request, name, person.city)));
+    }
+
+    public CompletionStage<Result> updatePerson(final Http.Request request, String name) {
+        Person person = formFactory.form(Person.class).bindFromRequest(request).get();
+        return personRepository.updateCity(name, person.city)
+                .thenApplyAsync(p -> redirect(routes.PersonController.index()), ec.current());
+    }
+
     public CompletionStage<Result> getPersons() {
         return personRepository
                 .list()

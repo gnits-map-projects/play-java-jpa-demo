@@ -14,4 +14,8 @@ public interface PersonRepository {
     CompletionStage<Person> add(Person person);
 
     CompletionStage<Stream<Person>> list();
+
+    CompletionStage<Person> find(String name);
+
+    CompletionStage<Boolean> updateCity(String name, String city);
 }

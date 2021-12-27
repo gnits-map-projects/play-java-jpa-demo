@@ -35,6 +35,16 @@ public class JPAPersonRepository implements PersonRepository {
         return supplyAsync(() -> wrap(em -> list(em)), executionContext);
     }
 
+    @Override
+    public CompletionStage<Person> find(String name) {
+        return supplyAsync(() -> wrap(em -> find(em, name)), executionContext);
+    }
+
+    @Override
+    public CompletionStage<Boolean> updateCity(String name, String city) {
+        return supplyAsync(() -> wrap(em -> update(em, name, city)), executionContext);
+    }
+
     private <T> T wrap(Function<EntityManager, T> function) {
         return jpaApi.withTransaction(function);
     }
@@ -47,5 +57,21 @@ public class JPAPersonRepository implements PersonRepository {
     private Stream<Person> list(EntityManager em) {
         List<Person> persons = em.createQuery("select p from person p", Person.class).getResultList();
         return persons.stream();
+    }
+
+    private Person find(EntityManager em, String name) {
+        Person person = em.createQuery("select p from person p where p.name=:name", Person.class)
+                .setParameter("name", name).getSingleResult();
+        return person;
+    }
+
+    private boolean update(EntityManager em, String name, String city) {
+        int n = em.createQuery("update person p set p.city=:city where p.name=:name")
+                .setParameter("city",  city)
+                .setParameter("name", name)
+                .executeUpdate();
+        if(n == 1) return true;
+        else return false;
+
     }
 }

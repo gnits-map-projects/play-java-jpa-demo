@@ -6,6 +6,8 @@
 GET     /                           controllers.PersonController.index(req: Request)
 POST    /person                     controllers.PersonController.addPerson(req: Request)
 GET     /persons                    controllers.PersonController.getPersons()
+GET    /persons/update/:name       controllers.PersonController.updateForm(req: Request, name: String)
+POST    /persons/update/:name            controllers.PersonController.updatePerson(req: Request, name: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

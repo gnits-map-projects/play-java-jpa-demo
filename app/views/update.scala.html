@@ -1,0 +1,14 @@
+@(implicit req: Http.Request, name: String, city: String)
+
+@main("Students update") {
+    <script type='text/javascript' src='@routes.Assets.at("javascripts/index.js")'></script>
+
+    <form method="POST" action="@routes.PersonController.updatePerson(name)">
+        @helper.CSRF.formField
+        <label >Name: @name</label><br />
+        <label >Existing City: @city</label> <br />
+        <label >Updated City:</label>
+        <input type="text" name="city"/>
+        <button>Update City</button>
+    </form>
+}
