@@ -1,0 +1,16 @@
+@(implicit request: Http.Request)
+
+@main("Welcome to Play") {
+    <script type='text/javascript' src='@routes.Assets.at("javascripts/index.js")'></script>
+
+    <ul id="persons"></ul>
+
+    <form method="POST" action="@routes.PersonController.addPerson()">
+        @helper.CSRF.formField
+        <label >Name:</label>
+        <input type="text" default="name" name="name"/>
+        <label >City:</label>
+        <input type="text" name="city"/>
+        <button>Add Person</button>
+    </form>
+}
