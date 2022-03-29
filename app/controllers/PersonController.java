@@ -32,24 +32,24 @@ public class PersonController extends Controller {
         this.ec = ec;
     }
 
-    public Result index(final Http.Request request) {
-        return ok(views.html.index.render(request));
+    public Result index() {
+        return ok(views.html.index.render());
     }
 
-    public CompletionStage<Result> addPerson(final Http.Request request) {
-        Person person = formFactory.form(Person.class).bindFromRequest(request).get();
+    public CompletionStage<Result> addPerson() {
+        Person person = formFactory.form(Person.class).bindFromRequest().get();
         return personRepository
                 .add(person)
                 .thenApplyAsync(p -> redirect(routes.PersonController.index()), ec.current());
     }
 
-    public CompletionStage<Result> updateForm(final Http.Request request, String name) {
+    public CompletionStage<Result> updateForm(String name) {
         return personRepository.find(name)
-                .thenApplyAsync(person -> ok(views.html.update.render(request, name, person.city)));
+                .thenApplyAsync(person -> ok(views.html.update.render(name, person.city)), ec.current());
     }
 
-    public CompletionStage<Result> updatePerson(final Http.Request request, String name) {
-        Person person = formFactory.form(Person.class).bindFromRequest(request).get();
+    public CompletionStage<Result> updatePerson(String name) {
+        Person person = formFactory.form(Person.class).bindFromRequest().get();
         return personRepository.updateCity(name, person.city)
                 .thenApplyAsync(p -> redirect(routes.PersonController.index()), ec.current());
     }

@@ -1,5 +1,6 @@
 .idea/**
 .DS_Store
+.gradle/
 logs/
 target/
 project/project/
